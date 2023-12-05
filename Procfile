@@ -1,0 +1,1 @@
+web: gunicorn boardgamebuddy_api.wsgi
