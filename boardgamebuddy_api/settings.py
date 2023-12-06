@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
+import secrets
 from pathlib import Path
 
 import dj_database_url
@@ -22,18 +23,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y7w%z!fw5!943i$joh&_dru0op5klfq+pn_ng$7^n7fy5jv&@s'
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    default=secrets.token_urlsafe(nbytes=64),
+)
+
+# The `DYNO` env var is set on Heroku CI, but it's not a real Heroku app, so we have to
+# also explicitly exclude CI:
+# https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
+IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if not IS_HEROKU_APP:
+    DEBUG = False
 
-ALLOWED_HOSTS = ['boardgamebuddy-api-a3b5bf335532.herokuapp.com', '127.0.0.1', 'ec2-23-21-200-168.compute-1.amazonaws.com']
+if IS_HEROKU_APP:
+    ALLOWED_HOSTS = ['boardgamebuddy-api-a3b5bf335532.herokuapp.com', '127.0.0.1', 'ec2-23-21-200-168.compute-1.amazonaws.com']
+else:
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'boardgamebuddy_api', #app_name
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +64,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'rest_framework.middleware.DjangoObjectPermissionsMiddleware',
 ]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#     ],
+# }
 
 ROOT_URLCONF = 'boardgamebuddy_api.urls'
 
@@ -83,29 +104,25 @@ WSGI_APPLICATION = 'boardgamebuddy_api.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
-
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'boardgamebuddy',
-        # 'USER': 'admin',
-        # 'PASSWORD': 'password',
-        # 'HOST': 'ec2-23-21-200-168.compute-1.amazonaws.com',
-        # 'PORT': '5432',
-        # 'HOST': 'boardgamebuddy-api-a3b5bf335532.herokuapp.com',  # Set to the address where your PostgreSQL server is running
-    'development': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'boardgamebuddy',
-        'USER': 'admin',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',  # Set to the address where your PostgreSQL server is running
-        'PORT': '5432',      # Set to the port used by your PostgreSQL server
+if IS_HEROKU_APP:
+    DATABASES = {
+        'default': dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=True,
+            )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'boardgamebuddy',
+            'USER': 'admin',
+            'PASSWORD': 'password',
+            'HOST': 'localhost',  # Set to the address where your PostgreSQL server is running
+            'PORT': '5432',      # Set to the port used by your PostgreSQL server
+        }
+    }
 
 
 # Password validation
