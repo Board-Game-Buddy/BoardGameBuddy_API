@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-y7w%z!fw5!943i$joh&_dru0op5klfq+pn_ng$7^n7fy5jv&@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['boardgamebuddy-api-a3b5bf335532.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['boardgamebuddy-api-a3b5bf335532.herokuapp.com', '127.0.0.1', 'ec2-23-21-200-168.compute-1.amazonaws.com']
 
 
 # Application definition
@@ -81,16 +83,20 @@ WSGI_APPLICATION = 'boardgamebuddy_api.wsgi.application'
 #     }
 # }
 
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'boardgamebuddy',
-        'USER': 'admin',
-        'PASSWORD': 'password',
-        'HOST': 'ec2-23-21-200-168.compute-1.amazonaws.com',
-        'PORT': '5432',
+        dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
+
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'boardgamebuddy',
+        # 'USER': 'admin',
+        # 'PASSWORD': 'password',
+        # 'HOST': 'ec2-23-21-200-168.compute-1.amazonaws.com',
+        # 'PORT': '5432',
         # 'HOST': 'boardgamebuddy-api-a3b5bf335532.herokuapp.com',  # Set to the address where your PostgreSQL server is running
     },
     'development': {
