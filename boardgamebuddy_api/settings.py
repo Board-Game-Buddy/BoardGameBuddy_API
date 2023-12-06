@@ -23,11 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y7w%z!fw5!943i$joh&_dru0op5klfq+pn_ng$7^n7fy5jv&@s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://boardgamebuddy-api-a3b5bf335532.herokuapp.com/', '127.0.0.1']
 
-# 'https://boardgamebuddy-api-a3b5bf335532.herokuapp.com/', '127.0.0.1'
 
 # Application definition
 
@@ -131,7 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
