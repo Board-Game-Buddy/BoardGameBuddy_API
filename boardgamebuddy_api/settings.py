@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y7w%z!fw5!943i$joh&_dru0op5klfq+pn_ng$7^n7fy5jv&@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://boardgamebuddy-api-a3b5bf335532.herokuapp.com/', 'http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['https://boardgamebuddy-api-a3b5bf335532.herokuapp.com/', '127.0.0.1']
 
 
 # Application definition
@@ -129,8 +129,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = './static'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
