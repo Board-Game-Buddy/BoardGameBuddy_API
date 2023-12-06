@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y7w%z!fw5!943i$joh&_dru0op5klfq+pn_ng$7^n7fy5jv&@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://boardgamebuddy-api-a3b5bf335532.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['boardgamebuddy-api-a3b5bf335532.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
