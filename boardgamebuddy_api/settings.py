@@ -89,6 +89,13 @@ DATABASES = {
         'NAME': 'boardgamebuddy',
         'USER': 'admin',
         'PASSWORD': 'password',
+        'HOST': 'boardgamebuddy-api-a3b5bf335532.herokuapp.com',  # Set to the address where your PostgreSQL server is running
+    },
+    'development': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'boardgamebuddy',
+        'USER': 'admin',
+        'PASSWORD': 'password',
         'HOST': 'localhost',  # Set to the address where your PostgreSQL server is running
         'PORT': '5432',      # Set to the port used by your PostgreSQL server
     }
