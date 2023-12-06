@@ -14,5 +14,4 @@ psycopg2==2.9.9; sys_platform == "linux"
 psycopg2-binary==2.9.9; sys_platform != "linux"
 djangorestframework==3.14.0
 gunicorn==21.0.1
-
 dj-database-url>=2.0,<3.0

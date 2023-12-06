@@ -21,5 +21,5 @@ from boardgamebuddy_api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('boardgames/', views.game_list),
-    path('', views.test)
+    path('boardgames/<int:id>', views.game_details)
 ]
