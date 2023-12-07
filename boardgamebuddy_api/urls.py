@@ -23,6 +23,6 @@ from .views import UserListView, UserCreateView, UserDeleteView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('boardgames/', views.game_list),
-    path('boardgames/<int:id>', views.game_details)
+    path('boardgames/<int:id>', views.game_details),
     path('users/', UserListView.as_view(), name='user_list'),
 ]
