@@ -24,3 +24,26 @@ def game_details(request, id):
         serializer = BoardGameSerializer(game)
         # import pdb; pdb.set_trace()
         return JsonResponse(serializer.data)
+
+
+# users
+from .serializers import UserSerializer
+from .models import User
+
+@api_view(['GET'])
+def user_list(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return JsonResponse({"data": serializer.data})
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_details(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
+        return JsonResponse(serializer.data)
