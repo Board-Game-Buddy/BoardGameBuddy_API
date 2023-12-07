@@ -20,6 +20,12 @@ from boardgamebuddy_api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('boardgames/', views.game_list),
-    path('boardgames/<int:id>', views.game_details)
+
+    ### WE ARE PLANNING TO DO ALL BG RELATED CALLS DIRECTLY TO THE MIDDLEMAN
+    ### LEAVING THIS HERE IN CASE THAT CHANGES
+    # path('boardgames/', views.game_list),
+    # path('boardgames/<int:id>', views.game_details),
+
+    path('users/', views.user_list),
+    path('users/<int:id>', views.user_details),
 ]
