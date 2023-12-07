@@ -1,6 +1,24 @@
 from rest_framework import serializers
 from .models import *
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return {
+            'data': {
+                'id': representation['id'],
+                'type': 'user',
+                'attributes': {
+                    'name': representation['name'],
+                    'email': representation['email'],
+                },
+            }
+        }
+
 class BoardGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = BoardGame
