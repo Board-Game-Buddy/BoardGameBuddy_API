@@ -28,4 +28,5 @@ urlpatterns = [
 
     path('users/', views.user_list),
     path('users/<int:id>', views.user_details),
+    path('users_favorites', views.user_boardgames),
 ]

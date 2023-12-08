@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import *
 
+class UserBoardGameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserBoardGame
+        fields = 'board_game_id'
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

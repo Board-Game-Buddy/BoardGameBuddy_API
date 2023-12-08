@@ -5,6 +5,7 @@ from rest_framework import status
 
 from .serializers import *
 from .models import *
+from .facades import BoardGamesFacade
 
 ### WE ARE PLANNING TO DO ALL BG RELATED CALLS DIRECTLY TO THE MIDDLEMAN
 ### LEAVING THIS HERE IN CASE THAT CHANGES
@@ -62,3 +63,12 @@ def user_details(request, id):
     elif request.method == 'DELETE':
         user.delete()
         return Response("User Deleted", status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def user_boardgames(request, id):
+    if request.method == 'GET':
+        user = User.objects.get(pk=id)
+        board_game_ids = UserBoardGame.objects.get(user=user)
+
+        board_games = BoardGamesFacade.get_board_game_data(board_game_ids)
+        return JsonResponse(BoardGameSerializer(board_games))
