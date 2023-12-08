@@ -1,10 +1,17 @@
 from rest_framework import serializers
 from .models import *
+from .popos import *
 
 class UserBoardGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserBoardGame
         fields = 'board_game_id'
+
+class BoardGameSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    title = serializers.CharField()
+    image_path = serializers.CharField()
+    rank = serializers.CharField()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

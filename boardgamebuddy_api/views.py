@@ -68,7 +68,9 @@ def user_details(request, id):
 def user_boardgames(request, id):
     if request.method == 'GET':
         user = User.objects.get(pk=id)
-        board_game_ids = UserBoardGame.objects.get(user=user)
-
-        board_games = BoardGamesFacade.get_board_game_data(board_game_ids)
-        return JsonResponse(BoardGameSerializer(board_games))
+        user_board_games = UserBoardGame.objects.filter(user=user.id)
+        board_game_ids = [game.board_game_id for game in user_board_games]
+        board_games = BoardGamesFacade(board_game_ids).get_board_game_data()
+        # import pdb; pdb.set_trace()
+        serializer = BoardGameSerializer(board_games, many=True)
+        return JsonResponse(serializer.data, safe = False)

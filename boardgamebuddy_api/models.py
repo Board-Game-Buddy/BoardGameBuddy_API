@@ -37,5 +37,5 @@ class User(models.Model):
     
 #UserBoardGames
 class UserBoardGame(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    board_game_id = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    board_game_id = models.IntegerField(null=False)
