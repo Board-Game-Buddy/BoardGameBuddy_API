@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'boardgamebuddy_api', #app_name
     'rest_framework',
     'corsheaders',
+    'requests',
 
     'django.contrib.admin',
     'django.contrib.auth',
