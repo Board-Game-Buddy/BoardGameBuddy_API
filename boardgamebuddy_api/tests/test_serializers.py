@@ -6,7 +6,7 @@ from boardgamebuddy_api.serializers import UserBoardGameSerializer, BoardGameSer
 
 class SerializersTest(TestCase):
     def test_user_board_game_serializer(self):
-        user = User.objects.create(name="John Doe", email="john@example.com", image_path="example.jpg")
+        user = User.objects.create(name="User", email="user@test.com", image_path="test/path")
         user_board_game = UserBoardGame.objects.create(user=user, board_game_id=123)
 
         serializer = UserBoardGameSerializer(user_board_game)
@@ -24,8 +24,8 @@ class SerializersTest(TestCase):
             'id': 1,
             'attributes': {
                 'title': 'Game 1',
-                'image_path': '/path/to/image.jpg',
-                'rank': 'A',
+                'image_path': 'test/path',
+                'rank': '12',
             }
         }
 
@@ -35,24 +35,24 @@ class SerializersTest(TestCase):
         expected_data = {
             'id': '1',
             'title': 'Game 1',
-            'image_path': '/path/to/image.jpg',
-            'rank': 'A',
+            'image_path': 'test/path',
+            'rank': '12',
         }
 
         self.assertEqual(serializer.data, expected_data)
 
     def test_user_serializer(self):
-        user = User.objects.create(name="John Doe", email="john@example.com", image_path="example.jpg")
+        user = User.objects.create(name="User", email="user@test.com", image_path="test/path")
         serializer = UserSerializer(user)
 
         expected_data = {
             'data': {
-                'id': '1',
+                'id': 1,
                 'type': 'user',
                 'attributes': {
-                    'name': 'John Doe',  # Correct the expected 'name' value here
-                    'email': 'john@example.com',
-                    'image_path': '/path/to/image.jpg',
+                    'name': 'User',
+                    'email': 'user@test.com',
+                    'image_path': 'test/path',
                 },
             }
         }
