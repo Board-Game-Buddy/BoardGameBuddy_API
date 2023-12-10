@@ -8,6 +8,5 @@ class BoardGamesFacade:
 
 	def get_board_game_data(self):
 		board_games_data = self.board_games_service.get_board_games(self.board_game_ids)
-		# import pdb; pdb.set_trace()
 		board_games = [BoardGame(game) for game in board_games_data]
 		return board_games
