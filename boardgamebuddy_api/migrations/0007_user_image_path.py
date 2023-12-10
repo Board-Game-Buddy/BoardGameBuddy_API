@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='image_path',
-            field=models.CharField(max_length=500),
+            field=models.CharField(default='test', max_length=500),
             preserve_default=False,
         ),
     ]
