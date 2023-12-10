@@ -92,7 +92,7 @@
 
 ```
 
-> **Edit a user ⇒ PATCH /users/2 **
+> **Edit a user ⇒ PATCH /users/2**
 
 **Request Body**
 ```
