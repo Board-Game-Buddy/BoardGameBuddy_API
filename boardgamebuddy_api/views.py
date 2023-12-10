@@ -64,13 +64,31 @@ def user_details(request, id):
         user.delete()
         return Response("User Deleted", status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET'])
+@api_view(['GET', 'POST', 'DELETE'])
 def user_boardgames(request, id):
     if request.method == 'GET':
         user = User.objects.get(pk=id)
         user_board_games = UserBoardGame.objects.filter(user=user.id)
         board_game_ids = [game.board_game_id for game in user_board_games]
         board_games = BoardGamesFacade(board_game_ids).get_board_game_data()
-        # import pdb; pdb.set_trace()
         serializer = BoardGameSerializer(board_games, many=True)
         return JsonResponse(serializer.data, safe = False)
+    
+    elif request.method == 'POST':
+        board_game_id = request.GET.get('board_game_id')
+        data = {
+            'user': id,
+            'board_game_id': board_game_id
+        }
+        serializer = UserBoardGameSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user = id
+        board_game_id = request.GET.get('board_game_id')
+        user_board_game = UserBoardGame.objects.filter(user=user).filter(board_game_id=board_game_id)
+        user_board_game.delete()
+        return Response("User Favorite Deleted", status=status.HTTP_204_NO_CONTENT)

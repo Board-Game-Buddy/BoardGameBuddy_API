@@ -5,7 +5,7 @@ from .popos import *
 class UserBoardGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserBoardGame
-        fields = 'board_game_id'
+        fields = '__all__'
 
 class BoardGameSerializer(serializers.Serializer):
     id = serializers.CharField()
@@ -27,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
                 'attributes': {
                     'name': representation['name'],
                     'email': representation['email'],
+                    'image_path': representation['image_path'],
                 },
             }
         }

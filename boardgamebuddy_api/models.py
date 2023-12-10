@@ -4,6 +4,7 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
+    image_path = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
@@ -39,3 +40,6 @@ class User(models.Model):
 class UserBoardGame(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     board_game_id = models.IntegerField(null=False)
+
+    def __str__(self):
+        return (f"{self.user.name}'s Favorite - BGID {self.board_game_id}")
