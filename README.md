@@ -1,7 +1,7 @@
 # BoardGameBuddy API
 
 ## About
-BoardGameBuddy API serves as a microserves, housing the user databases. The `users` table holds the user's name, email, and profile picture (stored as an image url). The `userboardgame` table functions to hold the user's favorite boardgames and holds the user's ID as a foreign-key and the boardgame ID. 
+BoardGameBuddy API serves as a microservice, housing the user databases. The `users` table holds the user's name, email, and profile picture (stored as an image url). The `userboardgame` table functions to hold the user's favorite boardgames and holds the user's ID as a foreign-key and the boardgame ID. 
 
 This API includes endpoints for the following functionality: 
 - create new users
