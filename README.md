@@ -13,6 +13,8 @@ This API includes endpoints for the following functionality:
 - get all user's favorite board games
 - delete a user's favorite board game
 
+You can find the docs for this API [HERE](https://github.com/Board-Game-Buddy/BoardGameBuddy_API/blob/e0fa1a30a883131f37e194249dcdad16637c0cf5/API_DOCS.md)
+
 This API consumes from a custom made BoardGameBuddy API found [HERE](https://github.com/Board-Game-Buddy/board-game-geek-data).
 
 ## Built with: 
