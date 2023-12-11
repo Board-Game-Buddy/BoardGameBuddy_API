@@ -123,10 +123,10 @@ if 'test' in sys.argv:
 elif IS_HEROKU_APP:
     DATABASES = {
         'default': dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        )
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=True,
+            )
     }
 else:
     DATABASES = {
@@ -137,11 +137,7 @@ else:
             'PASSWORD': 'password',
             'HOST': 'localhost',  # Set to the address where your PostgreSQL server is running
             'PORT': '5432',      # Set to the port used by your PostgreSQL server
-        },
-        'test': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / "test_db.sqlite3",
-        },
+        }
     }
 
 
