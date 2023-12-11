@@ -40,14 +40,14 @@ def user_list(request):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PATCH', 'DELETE'])
 def user_details(request, id):
     try:
         user = User.objects.get(pk=id)
     except User.DoesNotExist:
-        raise JsonResponse(status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         
     if request.method == 'GET':
         serializer = UserSerializer(user)
@@ -84,7 +84,7 @@ def user_boardgames(request, id):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         user = id
