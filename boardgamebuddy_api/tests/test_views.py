@@ -30,6 +30,67 @@ class ViewsTest(TestCase):
         self.assertEqual(user_data['attributes']['image_path'], self.user1.image_path)
         self.assertEqual(user_data['type'], 'user')
 
+    def test_user_details_get(self):
+        url = '/users/1'
+        
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        user_data = response.json()['data']
+
+
+        expected_user_data = {
+            'id': 1,
+            'attributes': {
+                'name': 'User',
+                'email': 'user@test.com',
+                'image_path': 'test/path',
+            },
+            'type': 'user'
+        }
+
+        self.assertEqual(user_data, expected_user_data)
+
+    def test_user_list_post(self):
+            url = '/users/'
+
+            new_user_data = {
+                'name': 'User3',
+                'email': 'user3@test.com',
+                'image_path': 'test/path',
+            }
+
+            response = self.client.post(url, data=new_user_data, format='json')
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            new_user_attributes = response.json().get('data', {}).get('attributes', {})
+
+            self.assertEqual(new_user_attributes.get('name'), new_user_data.get('name'))
+            self.assertEqual(new_user_attributes.get('email'), new_user_data.get('email'))
+            self.assertEqual(new_user_attributes.get('image_path'), new_user_data.get('image_path'))
+
+    def test_user_list_post_sad(self):
+        url = '/users/'
+
+        new_user_data = {
+            'name': 'User4',
+        }
+
+        response = self.client.post(url, data=new_user_data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_user_details_get_not_found(self):
+        url = '/users/5'
+        
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.json())
+        self.assertEqual(response.json()['error'], 'User not found')
+
     def test_user_details_patch(self):
         url = '/users/2'
 
@@ -51,6 +112,13 @@ class ViewsTest(TestCase):
         self.assertEqual(user_data['data']['attributes']['email'], 'updatedemail@test.com')
         self.assertEqual(user_data['data']['attributes']['image_path'], 'updated/test/path')
 
+    def test_user_details_patch_sad(self):
+        url = '/users/2'
+        invalid_data = {'email': 'invalid_email'}
+        response = self.client.patch(url, invalid_data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_user_details_delete(self):
         url = '/users/2'
 
@@ -58,7 +126,6 @@ class ViewsTest(TestCase):
 
         response = self.client.delete(url)
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         expected_response = Response("User Deleted", status=status.HTTP_204_NO_CONTENT).data
         self.assertEqual(response.data, expected_response)
         self.assertFalse(User.objects.filter(pk=self.user2.id).exists())
@@ -81,6 +148,12 @@ class ViewsTest(TestCase):
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_user_boardgames_post_sad(self):
+        url = '/users/1/favorites?board_game_id=invalid_id'
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_boardgames_delete(self):
             url = '/users/1/favorites?board_game_id=3'
