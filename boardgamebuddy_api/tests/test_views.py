@@ -15,7 +15,7 @@ class ViewsTest(TestCase):
         self.user2 = User.objects.create(name="User2", email="user2@test.com", image_path="test/path")
 
     def test_users_list_get(self):
-        url = '/users/'
+        url = '/users'
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -53,7 +53,7 @@ class ViewsTest(TestCase):
         self.assertEqual(user_data, expected_user_data)
 
     def test_user_list_post(self):
-            url = '/users/'
+            url = '/users'
 
             new_user_data = {
                 'name': 'User3',
@@ -72,7 +72,7 @@ class ViewsTest(TestCase):
             self.assertEqual(new_user_attributes.get('image_path'), new_user_data.get('image_path'))
 
     def test_user_list_post_sad(self):
-        url = '/users/'
+        url = '/users'
 
         new_user_data = {
             'name': 'User4',
