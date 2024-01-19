@@ -2,6 +2,10 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.cache import cache
+# from datetime import timedelta
+import pdb
+
 
 from .serializers import *
 from .models import *
@@ -31,9 +35,13 @@ from .facades import BoardGamesFacade
 @api_view(['GET', 'POST'])
 def user_list(request):
     if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        if cache.get("all_users") == None:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+            cache.set("all_users", serializer.data, 30)
+            return JsonResponse(serializer.data, safe=False)
+        else:
+            return JsonResponse(cache.get("all_users"), safe=False)
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
