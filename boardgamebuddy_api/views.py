@@ -37,7 +37,6 @@ def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
-        cache.set("all_users", serializer.data, 30)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
