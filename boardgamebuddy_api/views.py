@@ -35,13 +35,10 @@ from .facades import BoardGamesFacade
 @api_view(['GET', 'POST'])
 def user_list(request):
     if request.method == 'GET':
-        if cache.get("all_users") == None:
-            users = User.objects.all()
-            serializer = UserSerializer(users, many=True)
-            cache.set("all_users", serializer.data, 30)
-            return JsonResponse(serializer.data, safe=False)
-        else:
-            return JsonResponse(cache.get("all_users"), safe=False)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        cache.set("all_users", serializer.data, 30)
+        return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
@@ -86,6 +83,7 @@ def user_boardgames(request, id):
             return JsonResponse(serializer.data, safe = False)
         else:
             return JsonResponse(cache.get(f"user_favorites{bg_count}"), safe = False)
+        
     elif request.method == 'POST':
         board_game_id = request.GET.get('board_game_id')
         data = {
