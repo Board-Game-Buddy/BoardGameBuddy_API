@@ -2,6 +2,10 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.cache import cache
+# from datetime import timedelta
+import pdb
+
 
 from .serializers import *
 from .models import *
@@ -69,11 +73,16 @@ def user_boardgames(request, id):
     if request.method == 'GET':
         user = User.objects.get(pk=id)
         user_board_games = UserBoardGame.objects.filter(user=user.id)
-        board_game_ids = [game.board_game_id for game in user_board_games]
-        board_games = BoardGamesFacade(board_game_ids).get_board_game_data()
-        serializer = BoardGameSerializer(board_games, many=True)
-        return JsonResponse(serializer.data, safe = False)
-    
+        bg_count = len(user_board_games)
+        if cache.get(f"user_favorites{bg_count}") == None:
+            board_game_ids = [game.board_game_id for game in user_board_games]
+            board_games = BoardGamesFacade(board_game_ids).get_board_game_data()
+            serializer = BoardGameSerializer(board_games, many=True)
+            cache.set(f"user_favorites{bg_count}", serializer.data, 30)
+            return JsonResponse(serializer.data, safe = False)
+        else:
+            return JsonResponse(cache.get(f"user_favorites{bg_count}"), safe = False)
+        
     elif request.method == 'POST':
         board_game_id = request.GET.get('board_game_id')
         data = {
